@@ -1,9 +1,19 @@
 import React, { useState } from "react";
-import { View, Text, Pressable, StyleSheet, TextInput } from "react-native";
+import {
+  View,
+  Text,
+  Pressable,
+  StyleSheet,
+  TextInput,
+  KeyboardAvoidingView,
+} from "react-native";
 
 export const LoginScreen = () => {
   const [passwordView, setPasswordView] = useState(true);
   const [inputFocus, setInputFocus] = useState({});
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handlePress = () => {
     setPasswordView(!passwordView);
@@ -17,37 +27,49 @@ export const LoginScreen = () => {
     setInputFocus((prevFocus) => ({ ...prevFocus, [inputName]: false }));
   };
 
+  const onLogin = () => {
+    console.log("Email:", email, "Password:", password);
+  };
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Увійти</Text>
-      <TextInput
-        style={[styles.input, inputFocus["input1"] && styles.inputFocused]}
-        onFocus={() => handleFocus("input1")}
-        onBlur={() => handleBlur("input1")}
-        placeholderTextColor="#BDBDBD"
-        placeholder="Електронна адреса"
-      />
-      <View style={{ position: "relative" }}>
+
+      <View>
         <TextInput
-          style={[styles.input, inputFocus["input2"] && styles.inputFocused]}
-          onFocus={() => handleFocus("input2")}
-          onBlur={() => handleBlur("input2")}
-          autoComplete="password"
-          secureTextEntry={passwordView}
-          placeholder="Пароль"
+          style={[styles.input, inputFocus["input1"] && styles.inputFocused]}
+          onFocus={() => handleFocus("input1")}
+          onBlur={() => handleBlur("input1")}
           placeholderTextColor="#BDBDBD"
+          placeholder="Електронна адреса"
+          value={email}
+          onChangeText={setEmail}
         />
-        <Text
-          style={styles.passwordView}
-          dataDetectorType="link"
-          onPress={handlePress}
-        >
-          Показати
-        </Text>
+        <View style={{ position: "relative" }}>
+          <TextInput
+            style={[styles.input, inputFocus["input2"] && styles.inputFocused]}
+            onFocus={() => handleFocus("input2")}
+            onBlur={() => handleBlur("input2")}
+            autoComplete="password"
+            secureTextEntry={passwordView}
+            placeholder="Пароль"
+            placeholderTextColor="#BDBDBD"
+            value={password}
+            onChangeText={setPassword}
+          />
+          <Text
+            style={styles.passwordView}
+            dataDetectorType="link"
+            onPress={handlePress}
+          >
+            Показати
+          </Text>
+        </View>
+
+        <Pressable style={styles.button} onPress={onLogin}>
+          <Text style={styles.textButton}>Увійти</Text>
+        </Pressable>
       </View>
-      <Pressable style={styles.button}>
-        <Text style={styles.textButton}>Увійти</Text>
-      </Pressable>
+
       <Text style={styles.link} dataDetectorType="link">
         Немає акаунта?Зареєструватися
       </Text>
@@ -60,7 +82,7 @@ const styles = StyleSheet.create({
     position: "relative",
     flex: 0.6,
     alignItems: "center",
-    gap: 16,
+    // gap: 16,
 
     paddingTop: 32,
     borderTopStartRadius: 25,
@@ -80,6 +102,7 @@ const styles = StyleSheet.create({
     color: "#212121",
 
     backgroundColor: "#F6F6F6",
+    marginBottom: 16,
     marginHorizontal: 16,
     paddingTop: 16,
     paddingBottom: 15,
@@ -101,6 +124,7 @@ const styles = StyleSheet.create({
     color: "#1B4371",
 
     position: "absolute",
+
     top: 13,
     left: 270,
   },
@@ -122,5 +146,6 @@ const styles = StyleSheet.create({
     fontFamily: "Roboto-Regular",
     fontSize: 16,
     color: "#1B4371",
+    marginTop: 16,
   },
 });

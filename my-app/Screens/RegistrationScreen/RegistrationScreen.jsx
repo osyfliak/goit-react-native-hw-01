@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import {
   Image,
+  KeyboardAvoidingView,
   Pressable,
   StyleSheet,
   Text,
@@ -15,6 +16,10 @@ export const RegistrationScreen = () => {
   const [passwordView, setPasswordView] = useState(true);
   const [avatarSource, setAvatarSource] = useState(null);
   const [inputFocus, setInputFocus] = useState({});
+
+  const [login, setLogin] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handlePress = () => {
     setPasswordView(!passwordView);
@@ -33,8 +38,12 @@ export const RegistrationScreen = () => {
     setInputFocus((prevFocus) => ({ ...prevFocus, [inputName]: false }));
   };
 
+  const onLogin = () => {
+   console.log("Login:",login,"Email:",email,"Password:",password);
+  };
+
   return (
-    <View style={styles.container} behavior="padding">
+    <View style={styles.container}>
       <View style={styles.avatarContainer}>
         <Image source={{ uri: avatarSource }} style={styles.avatar} />
         {avatarSource ? (
@@ -49,10 +58,13 @@ export const RegistrationScreen = () => {
       </View>
 
       <Text style={styles.title}>Реєстрація</Text>
-
+  
+        <View>
         <TextInput
           placeholderTextColor="#BDBDBD"
           placeholder="Логін"
+          value={login}
+          onChangeText={setLogin}
           style={[styles.input, inputFocus["input1"] && styles.inputFocused]}
           onFocus={() => handleFocus("input1")}
           onBlur={() => handleBlur("input1")}
@@ -60,6 +72,8 @@ export const RegistrationScreen = () => {
         <TextInput
           placeholderTextColor="#BDBDBD"
           placeholder="Електронна адреса"
+          value={email}
+          onChangeText={setEmail}
           style={[styles.input, inputFocus["input2"] && styles.inputFocused]}
           onFocus={() => handleFocus("input2")}
           onBlur={() => handleBlur("input2")}
@@ -69,6 +83,8 @@ export const RegistrationScreen = () => {
           <TextInput
             autoComplete="password"
             secureTextEntry={passwordView}
+            value={password}
+            onChangeText={setPassword}
             placeholder="Пароль"
             style={[styles.input, inputFocus["input3"] && styles.inputFocused]}
             onFocus={() => handleFocus("input3")}
@@ -79,15 +95,17 @@ export const RegistrationScreen = () => {
             style={styles.passwordView}
             dataDetectorType="link"
             onPress={handlePress}
-            onPre
           >
             Показати
           </Text>
         </View>
+        
+     
 
-      <Pressable style={styles.button}>
+      <Pressable style={styles.button} onPress={onLogin}>
         <Text style={styles.textButton}>Зареєструватися</Text>
       </Pressable>
+      </View>
       <Text style={styles.link} dataDetectorType="link">
         Вже є акаунт?Увійти
       </Text>
@@ -98,7 +116,7 @@ export const RegistrationScreen = () => {
 const styles = StyleSheet.create({
   container: {
     position: "relative",
-    flex: 0.6,
+    flex: 0.67,
     alignItems: "center",
     // gap: 16,
 
@@ -154,6 +172,7 @@ const styles = StyleSheet.create({
   },
   inputFocused: {
     borderColor: "#FF6C00",
+    backgroundColor: "#FFFFFF",
     borderWidth: 1,
   },
   passwordView: {
