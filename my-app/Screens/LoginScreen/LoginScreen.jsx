@@ -96,6 +96,7 @@ const styles = StyleSheet.create({
     fontFamily: "Roboto-Medium",
     fontSize: 30,
     color: "#212121",
+    marginBottom: 32,
   },
   input: {
     fontFamily: "Roboto-Regular",
