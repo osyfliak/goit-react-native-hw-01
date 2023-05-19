@@ -34,7 +34,9 @@ export const LoginScreen = () => {
     <View style={styles.container}>
       <Text style={styles.title}>Увійти</Text>
 
-      <View>
+      <KeyboardAvoidingView
+        behavior={Platform.OS == "ios" ? "padding" : "height"}
+      >
         <TextInput
           style={[styles.input, inputFocus["input1"] && styles.inputFocused]}
           onFocus={() => handleFocus("input1")}
@@ -64,11 +66,10 @@ export const LoginScreen = () => {
             Показати
           </Text>
         </View>
-
-        <Pressable style={styles.button} onPress={onLogin}>
-          <Text style={styles.textButton}>Увійти</Text>
-        </Pressable>
-      </View>
+      </KeyboardAvoidingView>
+      <Pressable style={styles.button} onPress={onLogin}>
+        <Text style={styles.textButton}>Увійти</Text>
+      </Pressable>
 
       <Text style={styles.link} dataDetectorType="link">
         Немає акаунта?Зареєструватися

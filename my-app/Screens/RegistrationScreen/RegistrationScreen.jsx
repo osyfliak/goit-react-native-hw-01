@@ -39,7 +39,7 @@ export const RegistrationScreen = () => {
   };
 
   const onLogin = () => {
-   console.log("Login:",login,"Email:",email,"Password:",password);
+    console.log("Login:", login, "Email:", email, "Password:", password);
   };
 
   return (
@@ -58,8 +58,10 @@ export const RegistrationScreen = () => {
       </View>
 
       <Text style={styles.title}>Реєстрація</Text>
-  
-        <View>
+
+      <KeyboardAvoidingView
+        behavior={Platform.OS == "ios" ? "padding" : "height"}
+      >
         <TextInput
           placeholderTextColor="#BDBDBD"
           placeholder="Логін"
@@ -99,13 +101,11 @@ export const RegistrationScreen = () => {
             Показати
           </Text>
         </View>
-        
-     
-
+      </KeyboardAvoidingView>
       <Pressable style={styles.button} onPress={onLogin}>
         <Text style={styles.textButton}>Зареєструватися</Text>
       </Pressable>
-      </View>
+
       <Text style={styles.link} dataDetectorType="link">
         Вже є акаунт?Увійти
       </Text>
