@@ -1,45 +1,31 @@
-import React from "react";
-import {
-  Image,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { useNavigation } from '@react-navigation/native';
+import React from 'react';
+import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import LogOut from '../../img/log-out.svg';
 
 export const PostsScreen = () => {
+  const navigation = useNavigation();
   return (
-    <View style={styles.container}>
-      <View style={styles.upContainer}>
-        <Text>Публікації</Text>
-        <Text>логаут</Text>
-      </View>
-
+    <View>
       <ScrollView>
         <Image />
         <Text>Natali Romanova</Text>
         <Text>email@example.com</Text>
       </ScrollView>
-      <View>
-        <Pressable></Pressable>
-        <Pressable></Pressable>
-        <Pressable></Pressable>
-      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    position: "relative",
+    position: 'relative',
     flex: 1,
-    alignItems: "center",
-   
+    alignItems: 'center',
+
     paddingTop: 92,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: '#FFFFFF',
   },
-  upContainer: {
-    
+  header: {
+    flexDirection: 'row',
   },
 });
