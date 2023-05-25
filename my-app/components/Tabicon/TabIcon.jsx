@@ -4,7 +4,7 @@ import { StyleSheet, View } from 'react-native';
 export const TabIcon = ({ focused, icon }) => {
   const iconStyle = focused ? styles.activeIcon : styles.inactiveIcon;
   const containerStyle = focused ? styles.tabIconContainerActive : styles.tabIconContainer;
-  return <View style={containerStyle}>{icon({ width: 24, height: 24, style: iconStyle })}</View>;
+  return <View style={containerStyle}>{icon({ width: 34, height: 34, style: iconStyle })}</View>;
 };
 
 const styles = StyleSheet.create({

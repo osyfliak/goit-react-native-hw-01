@@ -4,14 +4,10 @@ import GoBack from '../../img/goBack.svg';
 import { useNavigation } from '@react-navigation/native';
 
 export const Goback = () => {
-    const navigation = useNavigation();
-  return (
-    <Text
-      // style={styles.logout}
-      dataDetectorType="link"
-      onPress={() => navigation.goBack()}
-    >
-      <GoBack />
-    </Text>
-  );
+   const navigation = useNavigation();
+   return (
+      <Text dataDetectorType="link" onPress={() => navigation.goBack()}>
+         <GoBack />
+      </Text>
+   );
 };
