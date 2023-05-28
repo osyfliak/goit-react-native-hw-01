@@ -15,17 +15,25 @@ import Geo from '../../img/mapi.svg';
 import * as MediaLibrary from 'expo-media-library';
 import { useNavigation } from '@react-navigation/native';
 import * as Location from 'expo-location';
+import { useDispatch, useSelector } from 'react-redux';
+import {fetchAddPost} from '../../redux/posts/postsOperations';
+import { selectUserId } from '../../redux/auth/authSelectors';
+import {fetchUploadPhoto} from '../../redux/storage/storageOperations'
 
 export function CreatePostsScreen() {
    const [hasPermission, setHasPermission] = useState(null);
    const [cameraRef, setCameraRef] = useState(null);
-   const [name, setName] = useState('');
+   const [namePost, setNamePost] = useState('');
    const [location, setLocation] = useState(null);
    const [photo, setPhoto] = useState('');
    const type = CameraType.back;
    const [currentLocation, setCurrentLocation] = useState(null);
 
    const navigation = useNavigation();
+
+   dispatch = useDispatch();
+
+   const uid = useSelector(selectUserId);
 
    useEffect(() => {
       (async () => {
@@ -62,19 +70,38 @@ export function CreatePostsScreen() {
    if (hasPermission === false) {
       return <Text>No access to camera</Text>;
    }
-   const onSubmit = () => {
-      navigation.navigate('PostsScreen',{photo,name,location});
+
+   const takePhoto = async() => {
+      const photo = await cameraRef.takePictureAsync();
+      setPhoto(photo.uri);
+     
+   }
+
+   const onSubmit = async() => {
+      if (!photo || !namePost || !location) {
+         alert('Будь ласка введіть дані');
+         return;
+      }
+      const { payload } = await dispatch(fetchUploadPhoto(photo));
+      await dispatch(
+         fetchAddPost({
+            photo: payload,
+            namePost,
+            location,
+            uid
+         })
+      );
+      navigation.navigate('PostsScreen', {location });
       setPhoto('');
-      setName('');
+      setNamePost('');
       setLocation('');
-      
    };
    return (
       <View style={styles.container}>
          <ScrollView>
             {photo ? (
                <>
-                  <Image source={photo} style={styles.camera} />
+                  <Image source={{ uri: photo }} style={styles.camera} />
                   <Text
                      dataDetectorType="link"
                      style={{
@@ -91,12 +118,7 @@ export function CreatePostsScreen() {
                   <View style={styles.photoView}>
                      <TouchableOpacity
                         style={styles.button}
-                        onPress={async () => {
-                           if (cameraRef) {
-                              const { uri } = await cameraRef.takePictureAsync();
-                              setPhoto(await MediaLibrary.createAssetAsync(uri));
-                           }
-                        }}
+                        onPress={takePhoto}
                      >
                         <View style={styles.takePhoto}>
                            <Cameraicon />
@@ -107,8 +129,8 @@ export function CreatePostsScreen() {
             )}
 
             <TextInput
-               value={name}
-               onChangeText={setName}
+               value={namePost}
+               onChangeText={setNamePost}
                style={styles.inputName}
                placeholder="Назва..."
             />
@@ -128,11 +150,11 @@ export function CreatePostsScreen() {
             <Text
                dataDetectorType="link"
                style={styles.inputIcon}
-               onPress={() => navigation.navigate('MapScreen',{currentLocation})}
+               onPress={() => navigation.navigate('MapScreen', { currentLocation })}
             >
                <Geo />
             </Text>
-            {name && location && photo ? (
+            {namePost && location && photo ? (
                <Pressable style={styles.onSubmit} onPress={onSubmit}>
                   <Text style={styles.textButtonFocus}>Oпублікувати</Text>
                </Pressable>
