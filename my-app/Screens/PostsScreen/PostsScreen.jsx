@@ -3,9 +3,12 @@ import { FlatList, Image, ScrollView, StyleSheet, Text, View } from 'react-nativ
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../redux/auth/authSelectors';
 import BG from '../../img/bg.jpg';
+import LocationIcon from '../../img/mapi.svg';
 import { selectAllPosts } from '../../redux/posts/postsSelectors';
+import { useNavigation } from '@react-navigation/native';
 
 export const PostsScreen = () => {
+   const navigation = useNavigation();
    const { name, email, avatar } = useSelector(selectUser);
    const posts = useSelector(selectAllPosts);
 
@@ -18,30 +21,20 @@ export const PostsScreen = () => {
                <Text style={styles.email}>{email}</Text>
             </View>
          </View>
-
-      
-            <FlatList
-               data={posts}
-               keyExtractor={(item, indx) => indx.toString()}
-               renderItem={({ item }) => (
-                  <View
-                     style={{
-                        marginTop: 50,
-                        marginBottom: 30,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                     }}
-                  >
-                     <Image
-                        source={{ uri: `${item.photo}` }}
-                        style={{ width: 380, height: 280, borderRadius: 15 }}
-                     />
-                     <Text>Назва:{item.namePost}</Text>
-                     <Text>Локація:{item.location}</Text>
-                  </View>
-               )}
-            ></FlatList>
-      
+         <ScrollView style={{ paddingHorizontal: 16, marginTop: 30 }}>
+            {posts.map(item => (
+               <>
+                  <Image
+                     source={{ uri: `${item.photo}` }}
+                     style={{ width: 380, height: 280, borderRadius: 15 }}
+                  />
+                  <Text style={styles.namePost}>{item.namePost}</Text>
+                  <Text style={styles.location}>
+                     <LocationIcon /> {item.location}
+                  </Text>
+               </>
+            ))}
+         </ScrollView>
       </>
    );
 };
@@ -50,7 +43,7 @@ const styles = StyleSheet.create({
    container: {
       position: 'relative',
       flex: 1,
-      // alignItems: 'center',
+      alignItems: 'center',
 
       flexDirection: 'row',
       backgroundColor: '#FFFFFF',
@@ -73,5 +66,17 @@ const styles = StyleSheet.create({
    email: {
       fontFamily: 'Roboto-Regular',
       fontSize: 11,
+   },
+   namePost: {
+      fontFamily: 'Roboto-Medium',
+      fontSize: 16,
+      alignItems: 'flex-start',
+   },
+   location: {
+      fontFamily: 'Roboto-Regular',
+      textDecorationStyle: 'solid',
+      textDecorationLine: 'underline',
+      fontSize: 16,
+      marginBottom: 20,
    },
 });
